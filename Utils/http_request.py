@@ -5,6 +5,7 @@ from Stock.Conf import const
 def request_by_url(url):
     http = __create_http_manager()
     text = http.request("GET", url, timeout=const.CONST_REQUEST_TIMEOUT)
+    http.clear()
     return text
 
 
