@@ -10,3 +10,9 @@ CONST_SINA_STOCK_FINANCE_PROFIT_URL = 'http://vip.stock.finance.sina.com.cn/q/go
 s_i=&s_a=&s_c=&reportdate=%s&quarter=%s&p=%s'
 REPORT_COLS = ['code', 'name', 'eps', 'eps_yoy', 'bvps', 'roe',
                'epcf', 'net_profits', 'profits_yoy']
+
+
+
+CONST_SINA_STOCK_FINANCE_SUMMARY_URL = 'http://vip.stock.finance.sina.com.cn/corp/go.php/vFD_FinanceSummary/stockid/%s/displaytype/4.phtml'
+
+CONST_QQ_STOCK_FINANCE_SUMMARY_URL = 'http://gu.qq.com/%s/gp'

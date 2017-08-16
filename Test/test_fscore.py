@@ -4,6 +4,8 @@ import re
 from lxml import etree
 import pandas as pd
 import lxml.html as html
+from sqlalchemy.orm import sessionmaker
+
 from Stock.Conf.conn import Connection
 import Utils.http_request as rq
 import Stock.Conf.const as const
@@ -22,9 +24,37 @@ class TestFscore(unittest.TestCase):
 
     def test_process(self):
         # num_top_company = 10
-        self.__get_fscore_from_internet()
+        # self.__get_fscore_from_internet()
         # self.__analysis_fscore_now()
         # self.__list_top_stock(num_top_company)
+
+        self.__get_bm_greater_mve_stock()
+
+    @staticmethod
+    def __get_bm_greater_mve_stock():
+
+        conn = Connection.conn_mysql()
+        df_stock=pd.read_sql_table('stock_code', conn)
+        for rows in df_stock.values:
+            response = rq.request_by_url(const.CONST_QQ_STOCK_FINANCE_SUMMARY_URL % (rows[0]))
+            html_str = response.data.decode('utf8')
+            _html = html.parse(StringIO(html_str))
+            pb = _html.xpath('//span[@class=\"col-2-2 bl\"][1]/text()')
+
+            print(pb[2])
+
+            DB_Session = sessionmaker(bind=conn)
+            session = DB_Session()
+            session.execute('update stock_code set PB=:PB  where code = :code', {'PB': pb[2], 'code': rows[0]})
+            session.commit()
+            session.close()
+
+            # bm = _html.xpath('//table[@id=\"FundHoldSharesTable\"]/tr[2]/td[2]/a/text()')
+            # print(bm[0].replace("元", ""))
+            # mve = _html.xpath('//table[@class=\"tbtb02\"]/tr[2]/td[2]/a/text()')
+            # print(mve[0])
+            print("done")
+
 
     @staticmethod
     def __get_fscore_from_internet():
