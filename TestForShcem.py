@@ -11,12 +11,11 @@ class LoginTest(Exception):
     def __init__(self, msg):
         self.msg = msg
 
-
 def get_data():
     driver = webdriver.Chrome()
 
     driver.get("http://member.test.shcem.com/Account/Index")
-    driver.find_element_by_id("txtLoginMobile").clear()
+    driver.find_element_by_id("txtLoginMobile").clear(
     driver.find_element_by_id("txtLoginPwd").clear()
     driver.find_element_by_id("txtLoginMobile").send_keys("13800000001")
     driver.find_element_by_id("txtLoginPwd").send_keys("111111")
@@ -44,5 +43,6 @@ def get_data():
 
 
 if __name__ == "__main__":
+    
     print("success")
     get_data()
